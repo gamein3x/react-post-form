@@ -1,7 +1,10 @@
 import { useState } from "react";
 
 const formDataInitial = {
-    
+    author: '',
+    title: '',
+    body: '',
+    public: true
 }
 
 function From() {
