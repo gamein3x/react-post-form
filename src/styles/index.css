@@ -1,12 +1,17 @@
-/*
-  Stile generale del progetto
-  ===========================
+body {
+  background-color: rgb(169, 210, 246);
+}
 
-  Questo file contiene gli stili globali dell'applicazione, cioè le regole
-  CSS che si applicano a tutta l'app (reset, tipografia di base, variabili,
-  utility personalizzate, ecc.).
+.container {      
+      margin: 35vh 35%;
+      border: 3px dotted black;
+      background: rgba(229, 207, 207, 0.792);
+      max-width: 35%;
+      padding: 10px;
+    }
 
-  Viene importato una sola volta in `src/main.jsx` e ha effetto su tutti i
-  componenti. Per stili specifici di un singolo componente è preferibile
-  usare un CSS Module (es. `NomeComponente.module.css`).
-*/
+.field {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
