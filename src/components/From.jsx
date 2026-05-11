@@ -1,32 +1,84 @@
-import { useState } from "react";
+import { useState } from 'react'
 
-const formDataInitial = {
-    author: '',
-    title: '',
-    body: '',
-    public: true
-}
+function Form() {
+    // Stato iniziale del form
+    const initialForm = {
+        author: '',
+        title: '',
+        body: '',
+        public: false
+    };
 
-function From() {
-    const handleChange = {event} => {
-        const target = event.target;
-        const tagType = target.type;
-        const name = target.name;
-        const value = target.value;
-        const checked = target.checked;
+    const [formData, setFormData] = useState(initialForm);
 
-        const keyToUpdate = name;
-        const valueToUpdate = (tagType === 'checkbox' ? checked : value);
+    // Gestore universale per gli input
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
 
-        const newFormData = {
+        setFormData({
             ...formData,
-            [keyToUpdate]: valueToUpdate
-        };
+            [name]: type === 'checkbox' ? checked : value
+        });
+    };
 
-        setFormData(newFormData);
+    // Funzione per l'invio dei dati
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        fetch('https://67c5b4f3351c081993fb1ab6.mockapi.io/api/posts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Dati inviati con successo:', data);
+                alert('Post creato! Controlla la console.');
+                setFormData(initialForm); // Reset del form
+            })
+            .catch(err => console.error('Errore:', err));
     };
 
     return (
-        <div>Fullform</div>
+        <div className="container">
+            <h1>Crea Nuovo Post</h1>
+            <form onSubmit={handleSubmit}>
+                <div className="field">
+                    <label>Autore:</label>
+                    <input
+                        type="text" name="author"
+                        value={formData.author} onChange={handleChange} required
+                    />
+                </div>
+
+                <div className="field">
+                    <label>Titolo:</label>
+                    <input
+                        type="text" name="title"
+                        value={formData.title} onChange={handleChange} required
+                    />
+                </div>
+
+                <div className="field">
+                    <label>Contenuto:</label>
+                    <textarea
+                        name="body"
+                        value={formData.body} onChange={handleChange} required
+                    />
+                </div>
+
+                <div className="field-checkbox">
+                    <input
+                        type="checkbox" name="public"
+                        checked={formData.public} onChange={handleChange}
+                    />
+                    <label>Rendi pubblico</label>
+                </div>
+
+                <button type="submit">Invia Post</button>
+            </form>
+        </div>
     )
 }
+
+export default Form;
